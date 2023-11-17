@@ -46,12 +46,20 @@ weather %>%
 1. Are there any missing values in our variable of interest `RainTomorrow`? If so, we filter them out and save the new dataset as `weather_noNA`. 
 
 ```{r}
+missing_values_RainTomorrow <- sum(is.na(weatherAUS$RainTomorrow))
+cat("Number of missing values in RainTomorrow:", missing_values_RainTomorrow, "\n")
+weather_noNA <- weatherAUS %>% filter(!is.na(RainTomorrow))
 
 ```
 
 2. Which cities are the ones with more rain days? To do this, let's analyze the `RainToday` variable. 
 
 ```{r}
+cities_rain_days <- weather_noNA %>%
+  group_by(Location) %>%
+  summarise(total_rain_days = sum(RainToday == "Yes", na.rm = TRUE)) %>%
+  arrange(desc(total_rain_days))
+head(cities_rain_days, n = 5)
 
 ```
 
